@@ -296,7 +296,6 @@ namespace Fomm
             MessageBox.Show("Unrecognized game selection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
-        GameMode.PostInit();
 
         Mutex mutex;
         bool booNewMutex;
@@ -372,6 +371,8 @@ namespace Fomm
             continue;
           }
 
+          GameMode.PreInit();
+
           //Check that we're in fallout's directory and that we have write access
           var cancellaunch = true;
           if (!Settings.Default.NoUACCheck || Array.IndexOf(args, "-no-uac-check") == -1)
@@ -427,7 +428,16 @@ namespace Fomm
             Directory.CreateDirectory(tmpPath);
           }
 
-          var str7zPath = Path.Combine(ProgrammeInfoDirectory, "7z-32bit.dll");
+          var str7zPath = "";
+          
+          if (Environment.Is64BitProcess)
+          {
+            str7zPath = Path.Combine(ProgrammeInfoDirectory, "7z-64bit.dll");
+          }
+          else
+          {
+            str7zPath = Path.Combine(ProgrammeInfoDirectory, "7z-32bit.dll");
+          }
           SevenZipBase.SetLibraryPath(str7zPath);
 
           if (!GameMode.Init())

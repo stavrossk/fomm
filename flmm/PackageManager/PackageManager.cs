@@ -457,7 +457,6 @@ namespace Fomm.PackageManager
       butDeactivate.Enabled = mod.IsActive;
       bActivate.Text = !mod.IsActive ? "Activate" : "Reactivate";
 
-      Program.GameMode.buildPluginList();
       mf.RefreshPluginList();
     }
 
@@ -725,6 +724,7 @@ namespace Fomm.PackageManager
         var mduUninstaller = new ModUninstaller(mod);
         mduUninstaller.Uninstall(true);
       }
+
       foreach (ListViewItem lvi in lvModList.Items)
       {
         lvi.Checked = false;
